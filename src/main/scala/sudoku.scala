@@ -41,10 +41,9 @@ object Grid {
   
   def fromSeq(is: Seq[Int]): Grid = new Grid(is.map{Some(_)})
   def fromLines(lines: Seq[Seq[Option[Int]]]): Grid = new Grid(lines.flatten)
-  def fromFile(file: File): Grid = Grid.fromURL(file.toURI.toURL)
 
-  //Supports SudoCue (.sdk) 
-  def fromURL(url: URL): Grid = {
+  def fromFile(file: File): Grid = Grid.fromURL(file.toURI.toURL)
+  def fromURL(url: URL): Grid = { // Supports SudoCue (.sdk) 
     val s = Source.fromURL(url)
     val numberLines = for(line <- s.getLines;
                           if line(0) != '#') // Drop lines with # (metadata)
