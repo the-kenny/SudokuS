@@ -47,7 +47,7 @@ object Grid {
   def fromURL(url: URL): Grid = {
     val s = Source.fromURL(url)
     val numberLines = for(line <- s.getLines;
-                          if line(0) != '#')
+                          if line(0) != '#') // Drop lines with # (metadata)
                       yield (line map{
                         _ match {
                           case '.' => None
