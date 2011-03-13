@@ -46,19 +46,6 @@ class GridSpec extends Specification {
     }
   }
 
-  "Grid's `apply`" should {
-    "return either Some[Int] or None for x,y between 0 and 8" in {
-      for(x <- 0 to 8; y <- 0 to 8)
-        randomGrid(x, y) must (beNone or beSome[Int])
-    }
-
-    "throw an exception for 0 > x||y > 8" in {
-      val illegalArgs = Seq(-1, 9)
-      for(x <- illegalArgs; y <- illegalArgs)
-        randomGrid(x,y) must throwAn[IllegalArgumentException]
-    }
-  }
-  
   "Grid's companion object" should {
     "be able to construct a Grid from a list of ints" in {
       Grid.fromSeq(Seq.iterate(0,81){_+1}) must notBeNull
@@ -90,15 +77,39 @@ class GridSpec extends Specification {
       //The sudoku has a 1 at (8/8)
       grid(8,8) mustEqual Some(1)
     }
-  }
 
-  "A Grid constructed with no arguments" should {
-    "have 81 empty fields" in {
+    "be able to create an empty object" in {
       Grid().emptyFields mustEqual 81
     }
   }
 
-  "A Grid constructed with a seq of Ints" should {
-    
+  "Grid's `apply`" should {
+    "return either Some[Int] or None for x,y between 0 and 8" in {
+      for(x <- 0 to 8; y <- 0 to 8)
+        randomGrid(x, y) must (beNone or beSome[Int])
+    }
+
+    "throw an exception for 0 > x||y > 8" in {
+      val illegalArgs = Seq(-1, 9)
+      for(x <- illegalArgs; y <- illegalArgs)
+        randomGrid(x,y) must throwAn[IllegalArgumentException]
+    }
+  }
+
+  "Grid's `getBlock(x,y)`" should {
+    "throw an exception for 3 > x,y >= 0" in {
+      val illegalArgs = Seq(-1, 3)
+      for(x <- illegalArgs; y <- illegalArgs)
+        randomGrid.getBlock(x,y) must throwA[IllegalArgumentException]
+    }
+
+    "return a Seq[Option[Int]] with 9 elements for every x,y from 0 to 2" in {
+      for(x <- 0 to 2; y <- 0 to 2)
+        randomGrid.getBlock(x,y) must haveSize(9)
+    }
+
+    "return the correct number sequence for the block" in {
+      filledGrid.getBlock(0,0) must ==(Seq(0,1,2,9,10,11,18,19,20).map{Some(_)})
+    }
   }
 }

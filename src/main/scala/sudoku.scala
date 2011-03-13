@@ -18,15 +18,21 @@ class Grid(ois: Seq[Option[Int]]) {
 
   def getColumn(i: Int): Seq[Option[Int]] = {
     require(i >= 0 && i < 9)
-    data sliding(9,9) drop(i/9) map{_(i%9)} toList
+    data grouped(9) drop(i/9) map{_(i%9)} toList
   }
 
   def apply(x: Int, y: Int): Option[Int] = {
-    require(x >= 0 && x < 9 && y >= 0 && y < 9)
+    require(x >= 0 && x < 9 && 
+            y >= 0 && y < 9)
     data(9*y+x)
   }
 
-  def getBlock(x: Int, y: Int): Seq[Option[Int]] = Seq()
+  def getBlock(x: Int, y: Int): Seq[Option[Int]] = {
+    require(3 > x && x >= 0 && 
+            3 > y && y >= 0)
+
+    (for(i <- 0 to 2) yield getRow(y*3+i).drop(x*3).take(3)) flatten
+  }
 } 
 
 object Grid {
