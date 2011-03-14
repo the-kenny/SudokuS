@@ -44,15 +44,19 @@ object Grid {
 
   def fromFile(file: File): Grid = Grid.fromURL(file.toURI.toURL)
   def fromURL(url: URL): Grid = { // Supports SudoCue (.sdk) 
+    val cueTransformer: String => Seq[Option[Int]] = {
+      _.map{
+        _ match {
+          case '.'     => None
+          case 'x'|'X' => None
+          case '0'     => None
+          case i       => Some(i.toString.toInt)
+        }
+      }
+    }
+
     val s = Source.fromURL(url)
-    val numberLines = for(line <- s.getLines;
-                          if line(0) != '#') // Drop lines with # (metadata)
-                      yield (line map{
-                        _ match {
-                          case '.' => None
-                          case i   => Some(i.toString.toInt)
-                        } 
-                      } toList);
+    val numberLines = s getLines() filterNot{_.head == '#'} map(cueTransformer) 
     
     Grid.fromLines(numberLines toList)                       
   }
