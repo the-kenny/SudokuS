@@ -39,6 +39,10 @@ object Grid {
   def apply() = new Grid(Seq.fill(81){None})
   def apply(is: Option[Int]*) = new Grid(is)
   
-  def fromSeq(is: Seq[Int]): Grid = new Grid(is.map{Some(_)})
+  def fromSeq(is: Seq[Int]): Grid = new Grid(is.map((c: Int) => {
+    c match {
+      case 0 => None
+      case x => Some(x)
+  }}))
   def fromLines(lines: Seq[Seq[Option[Int]]]): Grid = new Grid(lines.flatten)
 }
