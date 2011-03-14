@@ -5,7 +5,7 @@ import java.net.URL
 import scala.io.Source
 
 object GridLoader {
-  def loadDotSdk(file: File): Grid = Grid.fromURL(file.toURI.toURL)
+  def loadDotSdk(file: File): Grid = loadDotSdk(file.toURI.toURL)
   def loadDotSdk(url: URL): Grid = { // Supports SudoCue (.sdk) 
     val cueTransformer: String => Seq[Option[Int]] = {
       _.map{
@@ -22,5 +22,15 @@ object GridLoader {
     val numberLines = s getLines() filterNot{_.head == '#'} map(cueTransformer) 
     
     Grid.fromLines(numberLines toList)                       
+  }
+
+  def loadDotSdm(file: File): Seq[Grid] = loadDotSdm(file.toURI.toURL)
+  def loadDotSdm(url: URL): Seq[Grid] = {
+    val lines = Source.fromURL(url).getLines
+    lines filter((l: String) => {
+      l != null && l.length == 81
+    }) map((line: String) => {
+      Grid.fromSeq(line.map{_.toString.toInt})
+    }) toList
   }
 }
