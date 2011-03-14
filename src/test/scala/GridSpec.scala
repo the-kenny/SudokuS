@@ -66,18 +66,6 @@ class GridSpec extends Specification {
       } 
     }
 
-    "be able to construct a Grid from a SudoCue file" in {
-      val url = getClass.getResource("/sudoku1.sdk")
-      val grid = Grid.fromURL(url)
-
-      //The sudoku has 45 empty fields
-      grid.emptyFields mustEqual 45
-      //The sudoku has a 2 at (0/0)
-      grid(0,0) mustEqual Some(2)
-      //The sudoku has a 1 at (8/8)
-      grid(8,8) mustEqual Some(1)
-    }
-
     "be able to create an empty object" in {
       Grid().emptyFields mustEqual 81
     }

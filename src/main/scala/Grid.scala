@@ -41,23 +41,4 @@ object Grid {
   
   def fromSeq(is: Seq[Int]): Grid = new Grid(is.map{Some(_)})
   def fromLines(lines: Seq[Seq[Option[Int]]]): Grid = new Grid(lines.flatten)
-
-  def fromFile(file: File): Grid = Grid.fromURL(file.toURI.toURL)
-  def fromURL(url: URL): Grid = { // Supports SudoCue (.sdk) 
-    val cueTransformer: String => Seq[Option[Int]] = {
-      _.map{
-        _ match {
-          case '.'     => None
-          case 'x'|'X' => None
-          case '0'     => None
-          case i       => Some(i.toString.toInt)
-        }
-      }
-    }
-
-    val s = Source.fromURL(url)
-    val numberLines = s getLines() filterNot{_.head == '#'} map(cueTransformer) 
-    
-    Grid.fromLines(numberLines toList)                       
-  }
 }
