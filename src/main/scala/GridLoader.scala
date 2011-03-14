@@ -33,4 +33,7 @@ object GridLoader {
       Grid.fromSeq(line.map{_.toString.toInt})
     }) toList
   }
+
+  def loadDotSs(file: File): Grid = null
+  def loadDotSs(url: URL): Grid = null
 }
