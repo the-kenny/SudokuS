@@ -11,8 +11,6 @@ object GridLoader {
       _.map{
         _ match {
           case '.'     => None
-          case 'x'|'X' => None
-          case '0'     => None
           case i       => Some(i.toString.toInt)
         }
       }
@@ -34,6 +32,6 @@ object GridLoader {
     }) toList
   }
 
-  def loadDotSs(file: File): Grid = null
-  def loadDotSs(url: URL): Grid = null
+  def loadDotSs(file: File): Grid = Grid()
+  def loadDotSs(url: URL): Grid = Grid()
 }
