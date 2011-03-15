@@ -44,5 +44,6 @@ object Grid {
       case 0 => None
       case x => Some(x)
   }}))
+
   def fromLines(lines: Seq[Seq[Option[Int]]]): Grid = new Grid(lines.flatten)
 }

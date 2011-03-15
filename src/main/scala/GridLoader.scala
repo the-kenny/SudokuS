@@ -10,8 +10,8 @@ object GridLoader {
     val cueTransformer: String => Seq[Option[Int]] = {
       _.map{
         _ match {
-          case '.'     => None
-          case i       => Some(i.toString.toInt)
+          case '.' => None
+          case i   => Some(i.toString.toInt)
         }
       }
     }
