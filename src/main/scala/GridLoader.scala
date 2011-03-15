@@ -32,6 +32,20 @@ object GridLoader {
     }) toList
   }
 
-  def loadDotSs(file: File): Grid = Grid()
-  def loadDotSs(url: URL): Grid = Grid()
+  def loadDotSs(file: File): Grid = loadDotSs(file.toURI.toURL)
+  def loadDotSs(url: URL): Grid = {
+    val droppedChars: Set[Char] = Set('-', '|')
+    
+    val ssTransformer: String => Seq[Option[Int]] = {
+      _ map{
+        _ match {
+          case '.' => None
+          case x   => Some(x.toString.toInt)
+        }
+      }
+    }
+    val lines: Iterator[String] = Source.fromURL(url) getLines()
+    val data = lines map{_ filterNot{droppedChars(_)}} map(ssTransformer)
+    Grid.fromLines(data toList)
+  }
 }
